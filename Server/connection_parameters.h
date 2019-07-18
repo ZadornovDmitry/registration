@@ -8,8 +8,8 @@ struct ConnectionParameters
     QString password;
     QString databaseName;
     QHostAddress address;
-    int port;
+    quint16 port;
 };
 
-
+Q_DECLARE_METATYPE(ConnectionParameters)
 #endif // CONNECTION_PARAMETERS_H

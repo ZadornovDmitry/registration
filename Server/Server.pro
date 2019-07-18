@@ -7,18 +7,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
+        client.cpp \
         connectionmanager.cpp \
         main.cpp \
         server.cpp \
-        sqlserver.cpp \
-        tcpserver.cpp
+        sqlclient.cpp
 
 HEADERS += \
+    client.h \
     connection_parameters.h \
     connectionmanager.h \
     server.h \
-    sqlserver.h \
-    tcpserver.h
+    sqlclient.h
 
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

@@ -1,5 +1,5 @@
-#ifndef SQLSERVER_H
-#define SQLSERVER_H
+#ifndef SQLCLIENT_H
+#define SQLCLIENT_H
 
 #include <QObject>
 #include <QScopedPointer>
@@ -9,17 +9,18 @@
 #include "connection_parameters.h"
 
 
-class SqlServer : public QObject
+class SqlClient : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY(SqlServer)
+    Q_DISABLE_COPY(SqlClient)
 public:
-    explicit SqlServer(QObject *parent = nullptr);
-    ~SqlServer() = default;
-    SqlServer(SqlServer &&other){qSwap(sqlDb_, other.sqlDb_);}
-    SqlServer &operator=(SqlServer &&other) Q_DECL_NOTHROW {qSwap(sqlDb_, other.sqlDb_); return  *this;}
+    explicit SqlClient(QObject *parent = nullptr);
+    ~SqlClient() = default;
+    SqlClient(SqlClient &&other){qSwap(sqlDb_, other.sqlDb_);}
+    SqlClient &operator=(SqlClient &&other) Q_DECL_NOTHROW {qSwap(sqlDb_, other.sqlDb_); return  *this;}
 
     void execQueryes(QMap<QString, QByteArray> &&) Q_DECL_NOTHROW;
+    void init(const QString &connectionName);
 private:
     Q_REQUIRED_RESULT bool sameParameters(const ConnectionParameters & ) Q_DECL_NOTHROW;
 
@@ -31,4 +32,4 @@ private:
     QScopedPointer<QSqlDatabase> sqlDb_;
 };
 
-#endif // SQLSERVER_H
+#endif // SQLCLIENT_H

@@ -1,4 +1,4 @@
-#include "sqlserver.h"
+#include "sqlclient.h"
 #include <QSqlDatabase>
 #include <QtSql/QSqlError>
 #include <QDebug>
@@ -6,18 +6,24 @@
 #include <QSqlRecord>
 
 
-SqlServer::SqlServer(QObject *parent) : QObject(parent),
+SqlClient::SqlClient(QObject *parent) : QObject(parent),
     sqlDb_(new QSqlDatabase)
 {
-    *sqlDb_ = QSqlDatabase::addDatabase("QIBASE");
+
 }
 
-void SqlServer::execQueryes(QMap<QString, QByteArray> &&) Q_DECL_NOTHROW
+void SqlClient::execQueryes(QMap<QString, QByteArray> &&) Q_DECL_NOTHROW
 {
 
 }
 
-bool SqlServer::sameParameters(const ConnectionParameters &params) Q_DECL_NOTHROW
+void SqlClient::init(const QString &connectionName)
+{
+    *sqlDb_ = QSqlDatabase::addDatabase("QIBASE", connectionName);
+    qDebug() << connectionName;
+}
+
+bool SqlClient::sameParameters(const ConnectionParameters &params) Q_DECL_NOTHROW
 {
     return  sqlDb_->hostName() == params.address.toString() &&
             sqlDb_->databaseName() == params.databaseName &&
@@ -25,11 +31,10 @@ bool SqlServer::sameParameters(const ConnectionParameters &params) Q_DECL_NOTHRO
             sqlDb_->password() == params.password;
 }
 
-void SqlServer::onConnectionParametersChanged(const ConnectionParameters &params) Q_DECL_NOTHROW
+void SqlClient::onConnectionParametersChanged(const ConnectionParameters &params) Q_DECL_NOTHROW
 {
-    qDebug() << "new params";
+    qDebug() << "new database params";
     if (sameParameters(params)){
-        qDebug() << "SqlServer: same connection parameters";
         return;
     }
 
